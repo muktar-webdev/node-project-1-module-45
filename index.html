@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- bootstrap style -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Node || Client-Side</title>
+</head>
+
+<body>
+    <h1>My node and mongo db site</h1>
+    <p id="userName"></p>
+    <div class="container">
+        <div class="row">
+            <input type="text" class="form-control" id="userInput">
+            <button class="btn btn-primary" id="addUser"> Add user</button>
+        </div>
+    </div>
+
+    <script>
+        fetch("http://localhost:3000/users/2")
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("userName").innerText = data.name;
+            });
+
+        // --post data to server -- // ( for post data from website) --//
+        const btnAddUser = document.getElementById("addUser");
+        btnAddUser.addEventListener("click", () => {
+            // console.log("Add user clicked");
+            const name = document.getElementById("userInput").value;
+            // const user = {name:name}
+            const user = {
+                name
+            };
+            // console.log(user);
+            // --fetch kore data pathanu --//
+            fetch("http://localhost:3000/addUsers", {
+                method: "POST",
+                body: JSON.stringify(user),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                }
+            })
+            .then(response => response.json())
+            // .then(data => console.log(data))
+            .then(data => updateUser(data))
+
+        })
+
+        function updateUser(user) {
+            document.getElementById('userName').innerText = user.name;
+        }
+    </script>
+</body>
+
+</html>
